@@ -12,6 +12,11 @@ const ingredientPrices = {
   bacon: .7
 };
 
+const ACTIONS = {
+  add: 'ADD',
+  remove: 'REMOVE'
+};
+
 class BurgerBuilder extends Component {
 
   state = {
@@ -24,20 +29,17 @@ class BurgerBuilder extends Component {
     totalPrice: 4
   };
 
-  addIngredient = (type) => {
-    let newIngredients = _.clone(this.state.ingredients);
-    const newCount = newIngredients[type] + 1;
-    newIngredients[type] = newCount;
-    const updatedPrice = this.state.totalPrice + ingredientPrices[type];
-    this.setState({ingredients: newIngredients, totalPrice: updatedPrice});
+  ingredientResult = (ingredients, price) => {
+    return {ingredients, totalPrice: price}
   }
 
-  removeIngredient = (type) => {
+  updateIngredient = (action, ingType) => {
     let newIngredients = _.clone(this.state.ingredients);
-    const newCount = newIngredients[type] - 1;
-    newIngredients[type] = newCount;
-    const updatedPrice = this.state.totalPrice - ingredientPrices[type];
-    this.setState({ingredients: newIngredients, totalPrice: updatedPrice});
+    newIngredients[ingType] = action === ACTIONS.add ?
+      newIngredients[ingType] + 1 :
+      newIngredients[ingType] - 1;
+    const updatedPrice = this.state.totalPrice + ingredientPrices[ingType];
+    this.setState(this.ingredientResult(newIngredients, updatedPrice));
   }
 
   render() {
@@ -45,8 +47,8 @@ class BurgerBuilder extends Component {
       <Aux>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
-          addIngredientHandler={this.addIngredient}
-          removeIngredientHandler={this.removeIngredient} />
+          addIngredientHandler={_.partial(this.updateIngredient, ACTIONS.add)}
+          removeIngredientHandler={_.partial(this.updateIngredient, ACTIONS.remove)} />
       </Aux>
     )
   }
