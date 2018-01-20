@@ -33,11 +33,15 @@ class BurgerBuilder extends Component {
     return {ingredients, totalPrice: price}
   }
 
+  updateIngredientCount = (count, action) => {
+    return action === ACTIONS.add ?
+      count === 5 ? 5 : count + 1 :
+      count === 0 ? 0 : count - 1;
+  }
+
   updateIngredient = (action, ingType) => {
     let newIngredients = _.clone(this.state.ingredients);
-    newIngredients[ingType] = action === ACTIONS.add ?
-      newIngredients[ingType] + 1 :
-      newIngredients[ingType] - 1;
+    newIngredients[ingType] = this.updateIngredientCount(newIngredients[ingType], action);
     const updatedPrice = this.state.totalPrice + ingredientPrices[ingType];
     this.setState(this.ingredientResult(newIngredients, updatedPrice));
   }
