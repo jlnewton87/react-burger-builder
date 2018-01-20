@@ -5,7 +5,8 @@ import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
-const ingredientPrices = {
+const INGREDIENT_PRICES = {
+  base: 4,
   salad: .5,
   cheese: .4,
   meat: 1.3,
@@ -26,24 +27,37 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0,
     },
-    totalPrice: 4
+    totalPrice: 0
   };
 
   ingredientResult = (ingredients, price) => {
+    // used to hash result as input to `setState`
     return {ingredients, totalPrice: price}
   }
 
   updateIngredientCount = (count, action) => {
+    // add or remove ingredient keeping
+    // min 0 and max 5
     return action === ACTIONS.add ?
       count === 5 ? 5 : count + 1 :
       count === 0 ? 0 : count - 1;
   }
 
+  getPrice = (ingredients) => {
+    // updates price based on ingredient list
+    const priceList = INGREDIENT_PRICES;
+    return priceList.base + _.reduce(ingredients, (output, count, name) => {
+      return output += priceList[name] * count;
+    }, 0);
+  }
+
   updateIngredient = (action, ingType) => {
+    //takes an action and ingredient type to update state
     let newIngredients = _.clone(this.state.ingredients);
     newIngredients[ingType] = this.updateIngredientCount(newIngredients[ingType], action);
-    const updatedPrice = this.state.totalPrice + ingredientPrices[ingType];
-    this.setState(this.ingredientResult(newIngredients, updatedPrice));
+    this.setState(
+      this.ingredientResult(newIngredients, this.getPrice(newIngredients))
+    );
   }
 
   render() {
@@ -53,6 +67,7 @@ class BurgerBuilder extends Component {
         <BuildControls
           addIngredientHandler={_.partial(this.updateIngredient, ACTIONS.add)}
           removeIngredientHandler={_.partial(this.updateIngredient, ACTIONS.remove)} />
+        <h1>${parseFloat(this.state.totalPrice).toFixed(2)}</h1>
       </Aux>
     )
   }
