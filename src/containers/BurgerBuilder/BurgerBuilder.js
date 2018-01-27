@@ -25,7 +25,8 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 4,
-    canCheckout: false
+    canCheckout: false,
+    goingToCheckout: false
   };
 
   updateIngredient = (action, ingType) => {
@@ -41,19 +42,30 @@ class BurgerBuilder extends Component {
     );
   }
 
+  continueToCheckout = () => this.setState({goingToCheckout: true})
+
+  cancelModal = () => this.setState({goingToCheckout: false})
+
+  goToCheckout = () => alert('You Checked out!')
+
   render() {
     return (
       <Aux>
-        <Modal>
+        <Modal
+          show={this.state.goingToCheckout}
+          close={this.cancelModal} >
           <OrderSummary
-            order={this.state.ingredients} />
+            cancelCheckout={this.cancelModal}
+            order={this.state.ingredients}
+            continue={this.goToCheckout} />
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
           currentPrice={this.state.totalPrice}
           addIngredientHandler={_.partial(this.updateIngredient, ACTIONS.add)}
           removeIngredientHandler={_.partial(this.updateIngredient, ACTIONS.remove)}
-          canOrder={this.state.canCheckout} />
+          canOrder={this.state.canCheckout}
+          goToCheckout={this.continueToCheckout} />
       </Aux>
     )
   }

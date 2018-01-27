@@ -1,11 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import { FAUL, FALI } from 'react-fontawesome';
+import FA, { FAUL, FALI } from 'react-fontawesome';
 
 import { ingredientSummary, getPrice } from '../../../utils/';
 
 import classes from './OrderSummary.css';
 import Aux from '../../../hoc/Aux/Aux';
+import Button from '../../UI/Button/Button';
 
 const orderSummary = (props) => {
   const ingredientSummaryList = _.map(props.order, (count, name) => {
@@ -23,6 +24,12 @@ const orderSummary = (props) => {
       </FAUL>
       <p className={classes.center}>Total: ${getPrice(props.order).toFixed(2)}</p>
       <p className={classes.center}>Continue to checkout?</p>
+      <Button
+        type="danger"
+        clicked={props.cancelCheckout} ><FA name="frown-o"/> CANCEL</Button>
+      <Button
+        type="success"
+        clicked={props.continue} ><FA name="smile-o"/> CONTINUE</Button>
     </Aux>
   );
 };
