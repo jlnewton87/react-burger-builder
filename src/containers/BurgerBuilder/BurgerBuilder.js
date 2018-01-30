@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
-import FA from 'react-fontawesome';
 
 import {
   ACTIONS,
@@ -23,10 +22,7 @@ class BurgerBuilder extends Component {
 
   state = {
     ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
+
     },
     totalPrice: 4,
     canCheckout: false,
@@ -69,17 +65,24 @@ class BurgerBuilder extends Component {
       deliveryMethod: 'fastest'
     };
 
-    axios.post('/orders', order)
+    axios.post('/orders.json', order)
       .then( response => {
         this.setState({ loading: false, goingToCheckout: false });
       } )
       .catch( err => {
         this.setState({ loading: false, goingToCheckout: false });
-        alert('could not save your order!');
       } );
   }
 
-  render() {
+  componentDidMount () {
+    axios.get('https://burgerbuilder-92e93.firebaseio.com/ingredients.json')
+      .then( resp => {
+        const { data: ingredients } = resp;
+        this.setState({ingredients});
+      } );
+  }
+
+  render () {
     const modalBody = !this.state.loading ?
       <OrderSummary
         cancelCheckout={this.cancelModal}
