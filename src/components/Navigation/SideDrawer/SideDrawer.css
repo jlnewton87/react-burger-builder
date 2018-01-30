@@ -19,9 +19,10 @@
 }
 
 .Open {
+  display: block;
   transform: translateX(0);
 }
 
 .Close {
-  transform: translateX(-100);
+  transform: translateX(-100%);
 }

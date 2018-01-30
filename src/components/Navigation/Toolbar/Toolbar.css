@@ -17,8 +17,29 @@
   height: 100%;
 }
 
+.SideDrawerToggle {
+  width: 50px;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.SideDrawerToggle:hover {
+  color: #40A4C8;
+}
+
+.ToggleIcon {
+  margin-top: 20px;
+}
+
 @media (max-width: 500px) {
   .DesktopOnly {
+    display: none;
+  }
+}
+
+@media (min-width: 500px) {
+  .MobileOnly {
     display: none;
   }
 }

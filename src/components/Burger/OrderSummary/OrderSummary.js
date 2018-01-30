@@ -8,7 +8,8 @@ import classes from './OrderSummary.css';
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
-const orderSummary = (props) => {
+export default (props) => {
+
   const ingredientSummaryList = _.map(props.order, (count, name) => {
     return (
       <FALI name="caret-right" key={name}>{ ingredientSummary(name, count) }</FALI>
@@ -33,5 +34,3 @@ const orderSummary = (props) => {
     </Aux>
   );
 };
-
-export default orderSummary;
