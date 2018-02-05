@@ -3,8 +3,8 @@ import FA from 'react-fontawesome';
 
 import classes from './Button.css';
 
-const getIcon = (className, iconType) => {
-  const iconName = [iconType, className].join('');
+const getIcon = (buttonType, iconType) => {
+  const iconName = [iconType, buttonType].join('');
   console.log(iconName)
   const icons = {
     sillysuccess: <FA name="smile-o" />,
@@ -16,14 +16,21 @@ const getIcon = (className, iconType) => {
   return icons[iconName];
 }
 
-const button = (props) => {
-  const icon = getIcon(props.type, props.iconType || 'boring')
-  const classList = [ classes.Button ]
-  classList.push(
-    props.type === 'success' ?
+const getClassList = (buttonType) => {
+  let output = [ classes.Button ]
+  output.push(
+    buttonType === 'success' ?
       classes.Success :
       classes.Danger
   );
+
+  return output;
+}
+
+const button = (props) => {
+  const icon = getIcon(props.type, props.iconType || 'boring');
+  const classList = getClassList(props.type);
+
   return (
     <button
     onClick={props.clicked}
