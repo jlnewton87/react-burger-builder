@@ -12,10 +12,16 @@ export default class Checkout extends Component {
     }
   }
 
+  goBack = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary
+          ingredients={this.state.ingredients}
+          backToBuilder={this.goBack} />
       </div>
     );
   }
