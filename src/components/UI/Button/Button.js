@@ -5,7 +5,6 @@ import classes from './Button.css';
 
 const getIcon = (buttonType, iconType) => {
   const iconName = [iconType, buttonType].join('');
-  console.log(iconName)
   const icons = {
     sillysuccess: <FA name="smile-o" />,
     sillydanger: <FA name="frown-o" />,
