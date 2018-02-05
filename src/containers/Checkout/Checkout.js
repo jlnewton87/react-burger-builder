@@ -16,12 +16,17 @@ export default class Checkout extends Component {
     this.props.history.goBack();
   }
 
+  continueOrder = () => {
+    this.props.history.replace('/checkout/contact-data');
+  }
+
   render() {
     return (
       <div>
         <CheckoutSummary
           ingredients={this.state.ingredients}
-          backToBuilder={this.goBack} />
+          backToBuilder={this.goBack}
+          continueOrder={this.continueOrder}/>
       </div>
     );
   }

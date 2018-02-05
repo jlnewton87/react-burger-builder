@@ -5,7 +5,6 @@ import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 
 const checkoutSummary = (props) => {
-  console.log(props)
   return (
     <div className={classes.CheckoutSummary}>
       <h1>We hope it tastes great!</h1>
@@ -17,7 +16,7 @@ const checkoutSummary = (props) => {
         clicked={props.backToBuilder} >CANCEL</Button>
       <Button
         type="success"
-        clicked >CONTINUE</Button>
+        clicked={props.continueOrder} >CONTINUE</Button>
     </div>
   );
 };
