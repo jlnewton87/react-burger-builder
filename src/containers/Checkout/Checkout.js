@@ -13,7 +13,7 @@ export default class Checkout extends Component {
   }
 
   goBack = () => {
-    this.props.history.push('/');
+    this.props.history.goBack();
   }
 
   render() {
