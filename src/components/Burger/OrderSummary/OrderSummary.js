@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import FA, { FAUL, FALI } from 'react-fontawesome';
+import { FAUL, FALI } from 'react-fontawesome';
 
 import { ingredientSummary, getPrice } from '../../../utils/';
 
@@ -27,10 +27,12 @@ export default (props) => {
       <p className={classes.center}>Continue to checkout?</p>
       <Button
         type="danger"
-        clicked={props.cancelCheckout} ><FA name="frown-o"/> CANCEL</Button>
+        iconType='silly'
+        clicked={props.cancelCheckout} >CANCEL</Button>
       <Button
         type="success"
-        clicked={props.continue} ><FA name="smile-o"/> CONTINUE</Button>
+        iconType='silly'
+        clicked={props.continue} >CONTINUE</Button>
     </Aux>
   );
 };
