@@ -14,10 +14,6 @@ export default class Checkout extends Component {
     this.updateIngredientState();
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    this.updateIngredientState();
-  }
-
 
   goBack = () => {
     this.props.history.goBack();
