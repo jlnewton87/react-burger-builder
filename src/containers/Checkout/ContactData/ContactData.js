@@ -14,7 +14,12 @@ export default class ContactData extends Component {
     }
   }
 
-  render() {
+  orderHandler = (e) => {
+    e.preventDefault();
+    console.log(this.props.ingredients);
+  }
+
+  render () {
     return (
       <div className={classes.ContactData}>
         <h4>Enter you info</h4>
@@ -23,7 +28,7 @@ export default class ContactData extends Component {
           <input type="text" name="email" placeholder="your email" />
           <input type="text" name="street" placeholder="your street" />
           <input type="text" name="zip" placeholder="your zip" />
-          <Button type="success">ORDER</Button>
+          <Button type="success" clicked={this.orderHandler}>ORDER</Button>
         </form>
       </div>
     );
