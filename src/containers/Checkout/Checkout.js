@@ -50,7 +50,7 @@ export default class Checkout extends Component {
     return (
       <div>
         {display}
-        <Route path={`${this.props.match.path}/contact-data`} render={() => <ContactData ingredients={this.state.ingredients} />} />
+        <Route path={`${this.props.match.path}/contact-data`} render={(props) => <ContactData ingredients={this.state.ingredients} {...props} />} />
       </div>
     );
   }
