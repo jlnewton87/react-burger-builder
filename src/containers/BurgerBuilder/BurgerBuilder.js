@@ -49,29 +49,6 @@ class BurgerBuilder extends Component {
   cancelModal = () => this.setState({goingToCheckout: false})
 
   goToCheckout = () => {
-    // this.setState({ loading: true });
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: 'Some Body',
-    //     address: {
-    //       street: '555 Some Place',
-    //       zip: '33333',
-    //       country: 'US'
-    //     },
-    //     email: 'test@testing.co'
-    //   },
-    //   deliveryMethod: 'fastest'
-    // };
-
-    // axios.post('/orders.json', order)
-    //   .then( response => {
-    //     this.setState({ loading: false, goingToCheckout: false });
-    //   } )
-    //   .catch( err => {
-    //     this.setState({ loading: false, goingToCheckout: false });
-    //   } );
     const encodedIngredients = JSON.stringify(this.state.ingredients);
     this.props.history.push(`/checkout?ing=${toBase64(encodedIngredients)}`);
   }

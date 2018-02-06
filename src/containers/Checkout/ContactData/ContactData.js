@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 
+import { getPrice } from '../../../utils';
+import axios from '../../../axios-orders';
+
 import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.css';
 
 export default class ContactData extends Component {
   state = {
+    loading: false,
     name: '',
     email: '',
     address: {
@@ -16,7 +20,29 @@ export default class ContactData extends Component {
 
   orderHandler = (e) => {
     e.preventDefault();
-    console.log(this.props.ingredients);
+    this.setState({ loading: true });
+    const order = {
+      ingredients: this.props.ingredients,
+      price: getPrice(this.props.ingredients),
+      customer: {
+        name: this.state.name,
+        address: {
+          street: this.state.street,
+          zip: this.state.zip,
+          country: 'US'
+        },
+        email: this.state.email
+      },
+      deliveryMethod: 'fastest'
+    };
+
+    axios.post('/orders.json', order)
+      .then( response => {
+        this.setState({ loading: false });
+      } )
+      .catch( err => {
+        this.setState({ loading: false });
+      } );
   }
 
   render () {
