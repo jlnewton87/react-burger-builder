@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { basicQueryStringDecoder, fromBase64 } from '../../utils';
+import { Route, Redirect } from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import ContactData from './ContactData/ContactData';
 
 export default class Checkout extends Component {
   state = {
@@ -14,7 +16,6 @@ export default class Checkout extends Component {
     this.updateIngredientState();
   }
 
-
   goBack = () => {
     this.props.history.goBack();
   }
@@ -24,23 +25,32 @@ export default class Checkout extends Component {
   }
 
   updateIngredientState(nextProps) {
-    const ingredients = JSON.parse(this.getIngredients(nextProps));
+    const ingredients = this.getIngredients(nextProps);
     this.setState({ingredients});
   }
 
   getIngredients(nextProps) {
     const qs = nextProps ? nextProps.location.search : this.props.location.search;
+    if (!qs) {
+      return {};
+    }
     const encodedIngredients = basicQueryStringDecoder(qs)['ing'];
-    return fromBase64(encodedIngredients);
+    return JSON.parse(fromBase64(encodedIngredients));
   }
 
   render() {
+    const summary = (
+      <CheckoutSummary
+        ingredients={this.state.ingredients}
+        backToBuilder={this.goBack}
+        continueOrder={this.continueOrder}/>
+    );
+    const redirect = <Redirect to="/" />
+    const display = this.state.ingredients.meat ? summary : redirect;
     return (
       <div>
-        <CheckoutSummary
-          ingredients={this.state.ingredients}
-          backToBuilder={this.goBack}
-          continueOrder={this.continueOrder}/>
+        {display}
+        <Route path={`${this.props.match.path}/contact-data`} component={ContactData} />
       </div>
     );
   }
