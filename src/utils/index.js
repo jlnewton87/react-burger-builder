@@ -60,3 +60,30 @@ export const getCanCheckout = (ingredients) => {
 export const ingredientSummary = (ingName, ingCount) => {
   return `${PROPER_NAMES[ingName]} @$${INGREDIENT_PRICES[ingName]}/each X ${ingCount}`; // Salad @$.50/each X 2
 }
+
+export const toBase64 = (string) => btoa(string)
+
+export const fromBase64 = (base64) => atob(base64)
+
+export const basicQueryStringDecoder = (querystring) => {
+  const splitUpPairs = (pair) => {
+    // can't just split, since base64 adds `=`s everywhere :(
+    let output = {};
+    const firstEqual = pair.indexOf('=');
+    const key = pair.substring(0, firstEqual);
+    const value = pair.substring(firstEqual + 1);
+    output[key] = value;
+    return output;
+  }
+
+  const combinePairs = (output, pair) => {
+    Object.assign(output, pair);
+    return output;
+  }
+
+  const pairs = querystring.split('?')[1].split('&');
+  const output = pairs
+    .map(splitUpPairs)
+    .reduce(combinePairs, {});
+  return output;
+}
