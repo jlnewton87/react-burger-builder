@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import { basicQueryStringDecoder, fromBase64 } from '../../utils';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
 export default class Checkout extends Component {
   state = {
     ingredients: {
-      salad: 1,
-      meat: 1,
-      cheese: 1,
-      bacon: 1
+      meat: 1
     }
   }
+
+  componentWillMount() {
+    this.updateIngredientState();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.updateIngredientState();
+  }
+
 
   goBack = () => {
     this.props.history.goBack();
@@ -18,6 +25,17 @@ export default class Checkout extends Component {
 
   continueOrder = () => {
     this.props.history.replace('/checkout/contact-data');
+  }
+
+  updateIngredientState(nextProps) {
+    const ingredients = JSON.parse(this.getIngredients(nextProps));
+    this.setState({ingredients});
+  }
+
+  getIngredients(nextProps) {
+    const qs = nextProps ? nextProps.location.search : this.props.location.search;
+    const encodedIngredients = basicQueryStringDecoder(qs)['ing'];
+    return fromBase64(encodedIngredients);
   }
 
   render() {

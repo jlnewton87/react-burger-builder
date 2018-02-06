@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
+import { toBase64 } from '../../utils';
 
 import {
   ACTIONS,
@@ -71,7 +72,8 @@ class BurgerBuilder extends Component {
     //   .catch( err => {
     //     this.setState({ loading: false, goingToCheckout: false });
     //   } );
-    this.props.history.push('/checkout');
+    const encodedIngredients = JSON.stringify(this.state.ingredients);
+    this.props.history.push(`/checkout?ing=${toBase64(encodedIngredients)}`);
   }
 
   componentDidMount () {
