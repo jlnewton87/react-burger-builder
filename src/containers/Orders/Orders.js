@@ -4,8 +4,9 @@ import _ from 'lodash';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler';
 
-export default class Orders extends Component {
+class Orders extends Component {
   state = {
     orders: [],
     loading: true,
@@ -24,7 +25,7 @@ export default class Orders extends Component {
         this.setState({ loading: false, orders })
       })
       .catch( err => {
-        const message = `could not receive orders (${err})`;
+        const message = `Something went wrong.  Try again later.`;
         this.setState({ loading: false, message })
       });
   }
@@ -49,3 +50,5 @@ export default class Orders extends Component {
     );
   }
 }
+
+export default withErrorHandler(Orders, axios);
