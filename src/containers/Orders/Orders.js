@@ -13,24 +13,29 @@ class Orders extends Component {
     message: 'No orders yet'
   }
 
+  handleAjaxResponse = (res) => {
+    const normalizeOrdersResponse = (order, orderId) => {
+      let output = { ...order };
+      output.id = orderId;
+      return output;
+    };
+
+    let { data: rawOrders } = res;
+    const orders = _.map(rawOrders, normalizeOrdersResponse);
+    this.setState({ loading: false, orders })
+  }
+
   componentDidMount () {
     axios.get('/orders.json')
-      .then( res => {
-        let { data: rawOrders } = res;
-        const orders = _.map(rawOrders, (order, orderId) => {
-          let output = { ...order };
-          output.id = orderId;
-          return output;
-        });
-        this.setState({ loading: false, orders })
-      })
+      .then( this.handleAjaxResponse )
       .catch( err => {
-        const message = `Something went wrong.  Try again later.`;
-        this.setState({ loading: false, message })
+        this.setState({
+          loading: false,
+          message: `Something went wrong.  Try again later.` });
       });
   }
 
-  mapOrders (order) {
+  createOrderComponent (order) {
     return (
       <Order key={order.id} ingredients={order.ingredients} />
     );
@@ -38,11 +43,13 @@ class Orders extends Component {
 
   render () {
     const { loading, orders, message } = this.state;
+
     let display = loading ?
       <Spinner /> :
       orders && orders.length > 0 ?
-        _.map(orders, this.mapOrders) :
+        _.map(orders, this.createOrderComponent) :
         <h2 style={{ textAlign: 'center' }}>{ message }</h2>;
+
     return (
       <div>
         { display }
