@@ -90,7 +90,7 @@ export const basicQueryStringDecoder = (querystring) => {
 
 export const stringifyIngredients = (ingredients) => {
   const output = _.map(ingredients, (count, name) => {
-    return `${name} X ${count}`;
+    return `${name} (${count})`;
   });
   return output.join(', ');
 }
