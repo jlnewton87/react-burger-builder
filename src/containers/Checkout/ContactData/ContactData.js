@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { map, clone } from 'lodash';
+import { map, cloneDeep } from 'lodash';
 
 import { getPrice, getOrderForm } from '../../../utils';
 import axios from '../../../axios-orders';
@@ -35,7 +35,7 @@ export default class ContactData extends Component {
   }
 
   inputChangeHandler = (event, key) => {
-    let orderForm = clone(this.state.orderForm);
+    let orderForm = cloneDeep(this.state.orderForm);
     orderForm[`${key}`].value = event.target.value;
     this.setState({ orderForm });
   }
