@@ -9,9 +9,21 @@ const insertOptions = (options) => {
 const input = (props) => {
   const {options, ...config} = props.elementConfig;
   const inputTypes = {
-    input: <input className={classes.InputElement} { ...config } value={props.value} />,
-    textarea: <textarea className={classes.InputElement} { ...config } value={props.value} />,
-    select: <select className={classes.InputElement} { ...config } value={props.value}>{insertOptions(options)}</select>
+    input: <input
+      onChange={props.changed}
+      className={classes.InputElement}
+      { ...config }
+      value={props.value} />,
+    textarea: <textarea
+      onChange={props.changed}
+      className={classes.InputElement}
+      { ...config }
+      value={props.value} />,
+    select: <select
+      onChange={props.changed}
+      className={classes.InputElement}
+      { ...config }
+      value={props.value}>{insertOptions(options)}</select>
   };
 
   return (

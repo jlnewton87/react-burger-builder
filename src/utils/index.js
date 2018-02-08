@@ -96,8 +96,8 @@ export const stringifyIngredients = (ingredients) => {
 }
 
 export const getOrderForm = () => {
-  const getFormInput = (label, elementType, elementConfig) => {
-    return { label, elementType, elementConfig, value: '' };
+  const getFormInput = (label, elementType, elementConfig, defaultValue) => {
+    return { label, elementType, elementConfig, value: defaultValue || '' };
   }
 
   const getTextInputConfig = (type, placeholder) => {
@@ -123,6 +123,6 @@ export const getOrderForm = () => {
     zip: getFormInput('Zip', 'input', getTextInputConfig('text', 'ZIP code')),
     country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country')),
     email: getFormInput('Email', 'input', getTextInputConfig('text', 'Your email')),
-    deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']))
+    deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']), 'fastest')
   }
 }

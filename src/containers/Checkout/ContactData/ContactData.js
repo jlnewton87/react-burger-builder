@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { map } from 'lodash';
+import { map, clone } from 'lodash';
 
 import { getPrice, getOrderForm } from '../../../utils';
 import axios from '../../../axios-orders';
@@ -22,7 +22,6 @@ export default class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: getPrice(this.props.ingredients),
-
     };
 
     axios.post('/orders.json', order)
@@ -35,13 +34,22 @@ export default class ContactData extends Component {
       } );
   }
 
+  inputChangeHandler = (event, key) => {
+    let orderForm = clone(this.state.orderForm);
+    orderForm[`${key}`].value = event.target.value;
+    this.setState({ orderForm });
+  }
+
   render () {
     const form = (
       <Aux>
         <h4>Enter you info</h4>
         <form>
           {map(this.state.orderForm, (input, key) => {
-            return <Input key={key} {...input}/>
+            return <Input
+              changed={(event) => this.inputChangeHandler(event, key)}
+              key={key}
+              {...input}/>
           })}
           <Button type="success" clicked={this.orderHandler}>ORDER</Button>
         </form>
