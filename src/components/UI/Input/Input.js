@@ -7,10 +7,11 @@ const insertOptions = (options) => {
 };
 
 const input = (props) => {
+  const {options, ...config} = props.elementConfig;
   const inputTypes = {
-    input: <input className={classes.InputElement} { ...props.elementConfig } value={props.value} />,
-    textarea: <textarea className={classes.InputElement} { ...props.elementConfig } value={props.value} />,
-    select: <select className={classes.InputElement} { ...props.elementConfig } value={props.value}>{insertOptions(props.elementConfig.options)}</select>
+    input: <input className={classes.InputElement} { ...config } value={props.value} />,
+    textarea: <textarea className={classes.InputElement} { ...config } value={props.value} />,
+    select: <select className={classes.InputElement} { ...config } value={props.value}>{insertOptions(options)}</select>
   };
 
   return (
