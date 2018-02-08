@@ -94,3 +94,35 @@ export const stringifyIngredients = (ingredients) => {
   });
   return output.join(', ');
 }
+
+export const getOrderForm = () => {
+  const getFormInput = (label, elementType, elementConfig) => {
+    return { label, elementType, elementConfig, value: '' };
+  }
+
+  const getTextInputConfig = (type, placeholder) => {
+    return { type, placeholder };
+  }
+
+  const getSelectOptions = (values) => {
+    const output = values.map((option) => {
+      let display = option;
+      display = `${display[0].toUpperCase()}${display.slice(1)}`;
+      return { value: option, displayValue: `${display}` };
+    });
+    return {
+      options: [
+        ...output
+      ]
+    };
+  }
+
+  return {
+    name: getFormInput('Name', 'input', getTextInputConfig('text', 'Your name')),
+    street: getFormInput('Street', 'input', getTextInputConfig('text', 'Street address')),
+    zip: getFormInput('Zip', 'input', getTextInputConfig('text', 'ZIP code')),
+    country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country')),
+    email: getFormInput('Email', 'input', getTextInputConfig('text', 'Your email')),
+    deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']))
+  }
+}

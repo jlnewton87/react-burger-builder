@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { map } from 'lodash';
 
-import { getPrice } from '../../../utils';
+import { getPrice, getOrderForm } from '../../../utils';
 import axios from '../../../axios-orders';
 
 import Button from '../../../components/UI/Button/Button';
@@ -12,13 +13,7 @@ import Input from '../../../components/UI/Input/Input';
 export default class ContactData extends Component {
   state = {
     loading: false,
-    name: '',
-    email: '',
-    address: {
-      country: '',
-      street: '',
-      zip: ''
-    }
+    orderForm: getOrderForm()
   }
 
   orderHandler = (e) => {
@@ -27,16 +22,7 @@ export default class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: getPrice(this.props.ingredients),
-      customer: {
-        name: this.state.name,
-        address: {
-          street: this.state.street,
-          zip: this.state.zip,
-          country: 'US'
-        },
-        email: this.state.email
-      },
-      deliveryMethod: 'fastest'
+
     };
 
     axios.post('/orders.json', order)
@@ -54,10 +40,9 @@ export default class ContactData extends Component {
       <Aux>
         <h4>Enter you info</h4>
         <form>
-          <Input inputType='input' type="text" name="name" placeholder="your name" />
-          <Input inputType='input' type="text" name="email" placeholder="your email" />
-          <Input inputType='input' type="text" name="street" placeholder="your street" />
-          <Input inputType='input' type="text" name="zip" placeholder="your zip" />
+          {map(this.state.orderForm, (input, key) => {
+            return <Input key={key} {...input}/>
+          })}
           <Button type="success" clicked={this.orderHandler}>ORDER</Button>
         </form>
       </Aux>
