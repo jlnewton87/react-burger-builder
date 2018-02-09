@@ -18,7 +18,7 @@ export default class ContactData extends Component {
   }
 
   formIsValid () {
-    return map(this.state.orderForm, (field) => field.validation.valid && field.value.trim() !== '')
+    return map(this.state.orderForm, (field) => field.validation.valid && (field.value.trim() !== '' || field.validation.rule === undefined))
       .reduce((output, field) => {
         output = output && field;
         return output;
@@ -65,7 +65,7 @@ export default class ContactData extends Component {
     let orderForm = cloneDeep(this.state.orderForm);
     const { validation: { rule } } = orderForm[key];
     const { target: { value } } = event;
-    orderForm[key].validation.valid = rule(value);
+    orderForm[key].validation.valid = rule === undefined || rule(value);
     orderForm[key].value = value;
     this.setState({ orderForm });
   }
