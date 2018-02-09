@@ -15,6 +15,7 @@ const input = (props) => {
   const message = validation.valid ?
     '' :
     validation.invalidMessage;
+  const display = validation.rule ? 'inline' : 'none';
   const inputTypes = {
     input: <input
       onChange={props.changed}
@@ -36,7 +37,7 @@ const input = (props) => {
   return (
     <div className={classes.Input}>
       <label className={classes.Label}>
-        <span style={{ color: 'red', fontSize: '8px', paddingBottom: '5px' }}>* </span>
+        <span style={{ display, color: 'red', fontSize: '8px', paddingBottom: '5px' }}>* </span>
         { props.label }
       </label>
       { inputTypes[props.elementType] }
