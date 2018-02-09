@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { map, cloneDeep } from 'lodash';
+import { map, cloneDeep, assign } from 'lodash';
 
 import { getPrice, getOrderForm } from '../../../utils';
 import axios from '../../../axios-orders';
@@ -21,10 +21,11 @@ export default class ContactData extends Component {
     this.setState({ loading: true });
     const order = {
       ingredients: this.props.ingredients,
-      price: getPrice(this.props.ingredients),
+      price: getPrice(this.props.ingredients)
     };
+    const orderWithFormData = assign(order, this.getOrderFormValues(this.state.orderForm))
 
-    axios.post('/orders.json', order)
+    axios.post('/orders.json', orderWithFormData)
       .then( response => {
         this.setState({ loading: false });
         this.props.history.replace('/');
@@ -32,6 +33,19 @@ export default class ContactData extends Component {
       .catch( err => {
         this.setState({ loading: false });
       } );
+  }
+
+  getOrderFormValues = (form) => {
+    const formValues = map(form, (val, key) => {
+      let output = {};
+      output[key] = val.value;
+      return output;
+    }).reduce((output, field) => {
+      assign(output, field);
+      return output;
+    });
+    let { deliveryMethod, ...customer } = formValues;
+    return assign({}, { deliveryMethod }, { customer });
   }
 
   inputChangeHandler = (event, key) => {
