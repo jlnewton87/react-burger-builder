@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import validation from './validation';
 
 const INGREDIENT_PRICES = {
   base: 4,
@@ -96,8 +97,14 @@ export const stringifyIngredients = (ingredients) => {
 }
 
 export const getOrderForm = () => {
-  const getFormInput = (label, elementType, elementConfig, defaultValue) => {
-    return { label, elementType, elementConfig, value: defaultValue || '' };
+  const getFormInput = (label, elementType, elementConfig, defaultValue, validation) => {
+    return {
+      label,
+      elementType,
+      elementConfig,
+      value: defaultValue || '',
+      validation: validation || { valid: true }
+    };
   }
 
   const getTextInputConfig = (type, placeholder) => {
@@ -118,11 +125,11 @@ export const getOrderForm = () => {
   }
 
   return {
-    name: getFormInput('Name', 'input', getTextInputConfig('text', 'Your name')),
-    street: getFormInput('Street', 'input', getTextInputConfig('text', 'Street address')),
-    zip: getFormInput('Zip', 'input', getTextInputConfig('text', 'ZIP code')),
-    country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country'), 'United States'),
-    email: getFormInput('Email', 'input', getTextInputConfig('text', 'Your email')),
-    deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']), 'fastest')
+    name: getFormInput('Name', 'input', getTextInputConfig('text', 'Your name'), '', validation['name']),
+    street: getFormInput('Street', 'input', getTextInputConfig('text', 'Street address'), '', validation['street']),
+    zip: getFormInput('Zip', 'input', getTextInputConfig('text', 'ZIP code'), '', validation['zip']),
+    country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country'), 'United States', validation['country']),
+    email: getFormInput('Email', 'input', getTextInputConfig('text', 'Your email'), '', validation['email']),
+    deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']), 'fastest', validation['deliveryMethod'])
   }
 }

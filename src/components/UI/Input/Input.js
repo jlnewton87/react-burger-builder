@@ -7,29 +7,40 @@ const insertOptions = (options) => {
 };
 
 const input = (props) => {
+  const { validation } = props;
   const {options, ...config} = props.elementConfig;
+  const style = validation.valid ?
+    classes.InputElement :
+    [classes.InputElement, classes.Invalid].join(' ');
+  const message = validation.valid ?
+    '' :
+    validation.invalidMessage;
   const inputTypes = {
     input: <input
       onChange={props.changed}
-      className={classes.InputElement}
+      className={style}
       { ...config }
       value={props.value} />,
     textarea: <textarea
       onChange={props.changed}
-      className={classes.InputElement}
+      className={style}
       { ...config }
       value={props.value} />,
     select: <select
       onChange={props.changed}
-      className={classes.InputElement}
+      className={style}
       { ...config }
       value={props.value}>{insertOptions(options)}</select>
   };
 
   return (
     <div className={classes.Input}>
-      <label className={classes.Label}>{ props.label }</label>
+      <label className={classes.Label}>
+        <span style={{ color: 'red', fontSize: '8px', paddingBottom: '5px' }}>* </span>
+        { props.label }
+      </label>
       { inputTypes[props.elementType] }
+      <span className={classes.Message}>{ message }</span>
     </div>
   );
 };

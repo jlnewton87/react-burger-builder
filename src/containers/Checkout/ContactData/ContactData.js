@@ -13,11 +13,24 @@ import Input from '../../../components/UI/Input/Input';
 export default class ContactData extends Component {
   state = {
     loading: false,
-    orderForm: getOrderForm()
+    orderForm: getOrderForm(),
+    formMessage: ''
+  }
+
+  formIsValid () {
+    return map(this.state.orderForm, (field) => field.validation.valid && field.value.trim() !== '')
+      .reduce((output, field) => {
+        output = output && field;
+        return output;
+    }, true);
   }
 
   orderHandler = (e) => {
     e.preventDefault();
+    if (!this.formIsValid()) {
+      this.setState({ formMessage: 'Please complete the form' });
+      return;
+    }
     this.setState({ loading: true });
     const order = {
       ingredients: this.props.ingredients,
@@ -50,7 +63,10 @@ export default class ContactData extends Component {
 
   inputChangeHandler = (event, key) => {
     let orderForm = cloneDeep(this.state.orderForm);
-    orderForm[`${key}`].value = event.target.value;
+    const { validation: { rule } } = orderForm[key];
+    const { target: { value } } = event;
+    orderForm[key].validation.valid = rule(value);
+    orderForm[key].value = value;
     this.setState({ orderForm });
   }
 
@@ -58,6 +74,7 @@ export default class ContactData extends Component {
     const form = (
       <Aux>
         <h4>Enter you info</h4>
+        <p style={{ color: 'red' }}>{ this.state.formMessage }</p>
         <form>
           {map(this.state.orderForm, (input, key) => {
             return <Input
