@@ -121,7 +121,7 @@ export const getOrderForm = () => {
     name: getFormInput('Name', 'input', getTextInputConfig('text', 'Your name')),
     street: getFormInput('Street', 'input', getTextInputConfig('text', 'Street address')),
     zip: getFormInput('Zip', 'input', getTextInputConfig('text', 'ZIP code')),
-    country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country')),
+    country: getFormInput('Country', 'input', getTextInputConfig('text', 'Country'), 'United States'),
     email: getFormInput('Email', 'input', getTextInputConfig('text', 'Your email')),
     deliveryMethod: getFormInput('Delivery Method', 'select', getSelectOptions(['fastest', 'cheapest']), 'fastest')
   }
