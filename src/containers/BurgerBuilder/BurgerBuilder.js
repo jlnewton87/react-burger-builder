@@ -7,8 +7,7 @@ import {
   INGREDIENT_ACTIONS,
   updateIngredientCount,
   getPrice,
-  getCanCheckout,
-  toBase64
+  getCanCheckout
 } from '../../utils';
 
 import Aux from '../../hoc/Aux/Aux';
