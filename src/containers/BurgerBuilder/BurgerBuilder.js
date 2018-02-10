@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { toBase64 } from '../../utils';
+import actions from '../../store/reducers/actions';
 
 import {
   INGREDIENT_ACTIONS,
   updateIngredientCount,
   getPrice,
-  ingredientResult,
-  getCanCheckout
+  getCanCheckout,
+  toBase64
 } from '../../utils';
 
 import Aux from '../../hoc/Aux/Aux';
@@ -23,36 +23,24 @@ import axios from '../../axios-orders';
 class BurgerBuilder extends Component {
 
   state = {
-    ingredients: {
-
-    },
-    totalPrice: 4,
-    canCheckout: false,
     goingToCheckout: false,
     loading: false
   };
 
   updateIngredient = (action, ingType) => {
     //takes an action and ingredient type to update state
-    let newIngredients = _.clone(this.state.ingredients);
+    let newIngredients = _.clone(this.props.burger.ingredients);
     newIngredients[ingType] = updateIngredientCount(newIngredients[ingType], action);
-    this.setState(
-      ingredientResult(
-        newIngredients,
-        getPrice(newIngredients),
-        getCanCheckout(newIngredients)
-      )
-    );
+    this.props.updateBurgerHandler(newIngredients, getPrice(newIngredients))
   }
+
+  canOrder = () => getCanCheckout(this.props.burger.ingredients)
 
   continueToCheckout = () => this.setState({goingToCheckout: true})
 
   cancelModal = () => this.setState({goingToCheckout: false})
 
-  goToCheckout = () => {
-    const encodedIngredients = JSON.stringify(this.state.ingredients);
-    this.props.history.push(`/checkout?ing=${toBase64(encodedIngredients)}`);
-  }
+  goToCheckout = () => this.props.history.push(`/checkout`)
 
   componentDidMount () {
     axios.get('https://burgerbuilder-92e93.firebaseio.com/ingredients.json')
@@ -64,7 +52,7 @@ class BurgerBuilder extends Component {
           cheese,
           meat
         };
-        this.setState({ingredients});
+        this.props.updateIngredientsHandler(ingredients);
       } )
       .catch( err => {
         console.log(err);
@@ -75,7 +63,7 @@ class BurgerBuilder extends Component {
     const modalBody = !this.state.loading ?
       <OrderSummary
         cancelCheckout={this.cancelModal}
-        order={this.state.ingredients}
+        order={this.props.burger.ingredients}
         continue={this.goToCheckout} /> :
       <Spinner />;
 
@@ -86,12 +74,12 @@ class BurgerBuilder extends Component {
           close={this.cancelModal} >
           { modalBody }
         </Modal>
-        <Burger ingredients={this.state.ingredients}/>
+        <Burger ingredients={this.props.burger.ingredients}/>
         <BuildControls
-          currentPrice={this.state.totalPrice}
+          currentPrice={this.props.burger.price}
           addIngredientHandler={_.partial(this.updateIngredient, INGREDIENT_ACTIONS.add)}
           removeIngredientHandler={_.partial(this.updateIngredient, INGREDIENT_ACTIONS.remove)}
-          canOrder={this.state.canCheckout}
+          canOrder={this.canOrder()}
           goToCheckout={this.continueToCheckout} />
       </Aux>
     )
@@ -99,11 +87,16 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    burger: state.burger
+  };
 }
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    updateIngredientsHandler: (ingredients) => dispatch({ type: actions.UPDATE_INGREDIENTS, value: ingredients }),
+    updateBurgerHandler: (ingredients, price) => dispatch({ type: actions.UPDATE_BURGER, value: { ingredients, price } })
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
