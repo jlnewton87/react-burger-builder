@@ -16,7 +16,7 @@ const PROPER_NAMES = {
   meat: 'Meat'
 }
 
-export const ACTIONS = {
+export const INGREDIENT_ACTIONS = {
   add: 'ADD',
   remove: 'REMOVE'
 };
@@ -24,7 +24,7 @@ export const ACTIONS = {
 export const updateIngredientCount = (count, action) => {
   // add or remove ingredient keeping
   // min 0 and max 5
-  return action === ACTIONS.add ?
+  return action === INGREDIENT_ACTIONS.add ?
     count === 5 ? 5 : count + 1 :
     count === 0 ? 0 : count - 1;
 }
