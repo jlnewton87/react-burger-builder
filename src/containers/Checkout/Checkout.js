@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { getTotalIngredientCount } from '../../utils';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 
@@ -18,6 +19,11 @@ class Checkout extends Component {
   render() {
     return (
       <div>
+        {
+          getTotalIngredientCount(this.props.burger.ingredients) === 0 ?
+            <Redirect to='/' /> :
+            null
+        }
         <CheckoutSummary
           ingredients={this.props.burger.ingredients}
           backToBuilder={this.goBack}
