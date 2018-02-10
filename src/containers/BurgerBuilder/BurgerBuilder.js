@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import { toBase64 } from '../../utils';
 
 import {
-  ACTIONS,
+  INGREDIENT_ACTIONS,
   updateIngredientCount,
   getPrice,
   ingredientResult,
@@ -88,8 +89,8 @@ class BurgerBuilder extends Component {
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
           currentPrice={this.state.totalPrice}
-          addIngredientHandler={_.partial(this.updateIngredient, ACTIONS.add)}
-          removeIngredientHandler={_.partial(this.updateIngredient, ACTIONS.remove)}
+          addIngredientHandler={_.partial(this.updateIngredient, INGREDIENT_ACTIONS.add)}
+          removeIngredientHandler={_.partial(this.updateIngredient, INGREDIENT_ACTIONS.remove)}
           canOrder={this.state.canCheckout}
           goToCheckout={this.continueToCheckout} />
       </Aux>
@@ -97,4 +98,12 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = state => {
+  return {};
+}
+
+const mapDispatchToProps = dispatch => {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
