@@ -24,7 +24,8 @@ export default (state = initialState, action) => {
     case actions.UPDATE_INGREDIENTS:
       return updateStateIngredients(stateClone, action.value);
     case actions.UPDATE_BURGER:
-      return updateStateBurger(stateClone, action.value)
+      return updateStateBurger(stateClone, action.value);
+    default:
+      return state;
   }
-  return state;
 }
