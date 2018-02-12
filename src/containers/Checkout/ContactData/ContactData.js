@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { map, cloneDeep, assign } from 'lodash';
+import { connect } from 'react-redux';
 
-import { getPrice, getOrderForm } from '../../../utils';
+import { getOrderForm } from '../../../utils';
 import axios from '../../../axios-orders';
 
 import Button from '../../../components/UI/Button/Button';
@@ -10,7 +11,7 @@ import Aux from '../../../hoc/Aux/Aux';
 import classes from './ContactData.css';
 import Input from '../../../components/UI/Input/Input';
 
-export default class ContactData extends Component {
+class ContactData extends Component {
   state = {
     loading: false,
     orderForm: getOrderForm(),
@@ -33,8 +34,8 @@ export default class ContactData extends Component {
     }
     this.setState({ loading: true });
     const order = {
-      ingredients: this.props.ingredients,
-      price: getPrice(this.props.ingredients)
+      ingredients: this.props.burger.ingredients,
+      price: this.props.burger.price
     };
     const orderWithFormData = assign(order, this.getOrderFormValues(this.state.orderForm))
 
@@ -95,3 +96,11 @@ export default class ContactData extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    burger: state.burger
+  };
+}
+
+export default connect(mapStateToProps)(ContactData);

@@ -28,7 +28,7 @@ class Checkout extends Component {
           ingredients={this.props.burger.ingredients}
           backToBuilder={this.goBack}
           continueOrder={this.continueOrder}/>
-        <Route path={`${this.props.match.path}/contact-data`} render={(props) => <ContactData ingredients={this.props.burger.ingredients} {...props} />} />
+        <Route path={`${this.props.match.path}/contact-data`} component={ContactData} />
       </div>
     );
   }
