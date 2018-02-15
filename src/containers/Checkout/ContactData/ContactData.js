@@ -19,10 +19,12 @@ class ContactData extends Component {
   }
 
   formIsValid () {
-    return map(this.state.orderForm, (field) => field.validation.valid && (field.value.trim() !== '' || field.validation.rule === undefined))
-      .reduce((output, field) => {
-        output = output && field;
-        return output;
+    return map(this.state.orderForm, (field) => {
+      return field.validation.valid &&
+      (field.value.trim() !== '' || field.validation.rule === undefined)
+    }).reduce((output, field) => {
+      output = output && field;
+      return output;
     }, true);
   }
 
